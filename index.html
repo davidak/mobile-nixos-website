@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 2.0.10">
+<title>Mobile NixOS</title>
+<link rel="stylesheet" href="styles/styles.css">
+<link lang="en" rel="alternate" type="application/rss+xml" title="RSS feed (EN)" href="index.xml" />
+</head>
+<body class="index article">
+<header>
+  <nav>
+    <ul>
+      <li>
+        <h1>
+          <a href='index.html' class='is-active'>Mobile NixOS</a>
+        </h1>
+      </li>
+      <li><a href='getting-started.html' class=''>Getting Started</a></li>
+      <li><a href='devices/index.html' class=''>Devices List</a></li>
+      <li><a href='porting-guide.html' class=''>Porting Guide</a></li>
+    </ul>
+  </nav>
+</header>
+
+<div id="content">
+<div class="lead">
+<div class="paragraph">
+<p>NixOS on <strong>my</strong> phone?</p>
+</div>
+<div class="paragraph">
+<p>It&#8217;s quickly becoming a reality! Look at the <a href="devices/index.html">devices list</a>
+to see if your device is already supported. Otherwise, read about
+<a href="porting-guide.html">the porting process</a> to understand if <strong>you</strong> can get NixOS
+on your phone.</p>
+</div>
+</div>
+
+<section class="news">
+<h2 id="_news_items" class="discrete">News Items</h2>
+<article>
+  <header style="background-image: url('news/2020-03-03-february-2020-round-up.jpeg');">
+    <div class="details">
+      <h3><a href="news/2020-03-03-february-2020-round-up.html">February 2020 round-up</a></h3>
+      <div class="date">February 3th 2020</div>
+    </div>
+  </header>
+
+  <div class="contents">
+  <div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>This update is the fourth in a series of regular updates on the state of the
+project.</p>
+</div>
+<div class="paragraph">
+<p>Only changes that have been accepted and merged in Mobile NixOS are
+chronicled here. There&#8217;s always <a href="https://github.com/NixOS/mobile-nixos/pulls">more work</a>
+currently in-progress.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_notable_changes">Notable changes</h3>
+<div class="paragraph">
+<p><a href="https://github.com/NixOS/mobile-nixos/pulls?utf8=%E2%9C%93&amp;q=is%3Apr+merged%3A2020-02+merged%3A2020-03-01">3 PRs were merged</a>
+during the month. This is not cheating, the last merged PR was merged late on
+the 29th.</p>
+</div>
+<div class="paragraph">
+<p>This is not development slowing down. Far from it. <a href="https://github.com/mobile-nixos/">Four new projects</a>
+were added to the Mobile NixOS GitHub organization related to this month&#8217;s
+work. Keep on reading.</p>
+</div>
+<div class="sect3">
+<h4 id="_graphical_boot_selection">Graphical boot selection</h4>
+<div class="paragraph">
+<p>Hot on the heels of the <a href="https://mobile.nixos.org/news/2020-02-04-january-2020-round-up.html">re-written init</a>,
+and as teased, a working graphical boot selection is now available for Mobile
+NixOS platforms.</p>
+</div>
+<div class="paragraph">
+<p>There is more than meets the eye in <a href="https://github.com/NixOS/mobile-nixos/pull/80">pull request #80</a>.</p>
+</div>
+<div class="paragraph">
+<p>To make this possible, a GUI toolkit of relatively small weight has to be
+found. After some research, it was found in the <a href="https://littlevgl.com/">LittlevGL</a>
+library. While it is geared more towards <em>actual</em> embedded development, it does
+have a Linux framebuffer backend, support for evdev input. This is all standard
+stuff that is well supported on all targets. What is really nice with that
+library is it also supports a “simulator” target, which is basically an SDL
+window.</p>
+</div>
+<div class="paragraph">
+<p>With that said, I personally don&#8217;t want to write C, especially in complex use
+cases. I already worked on mruby integration for the Mobile NixOS stage-1. It
+was only natural to write <a href="https://github.com/mobile-nixos/mruby-lvgui">mruby bindings for LittleVGL</a>.</p>
+</div>
+<div class="paragraph">
+<p>With all the exposition done. What does this look like? The header image of
+this news post is composed of four devices running the GUI. An actual
+screenshot of the GUI follows, for better clarity.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="news/2020-03-03-boot-gui.png" alt="Screenshot of generation selection" width="600">
+</div>
+</div>
+<div class="paragraph">
+<p>This is not a feature complete generic replacement for a bootloader. Though, it
+can become one when kexec support is added in the future.</p>
+</div>
+<div class="paragraph">
+<p>Additionally, as touched upon in the pull request, these bindings will allow us
+to improve the graphical boot process. In a future improvement we&#8217;ll be able to
+add information about the current running step, and better failure state
+reporting.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_ports">Ports</h3>
+<div class="paragraph">
+<p>No new port were made in February. There is still a
+<a href="https://mobile.nixos.org/devices/index.html">total of 10 devices</a> you can
+build for.</p>
+</div>
+</div>
+  </div>
+</article>
+
+<article>
+  <header style="background-image: url('news/2020-02-04-january-2020-round-up.jpeg');">
+    <div class="details">
+      <h3><a href="news/2020-02-04-january-2020-round-up.html">January 2020 round-up</a></h3>
+      <div class="date">February 4th 2020</div>
+    </div>
+  </header>
+
+  <div class="contents">
+  <div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>This update is the third in a series of regular updates on the state of the
+project.</p>
+</div>
+<div class="paragraph">
+<p>Usually, only changes that have been accepted and merged in Mobile NixOS in the
+given month are chronicled here. There&#8217;s always
+<a href="https://github.com/NixOS/mobile-nixos/pulls">more work</a> currently in-progress.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_notable_changes">Notable changes</h3>
+<div class="paragraph">
+<p>Only <a href="https://github.com/NixOS/mobile-nixos/pulls?utf8=%E2%9C%93&amp;q=is%3Apr+merged%3A2020-01">1 PR was merged</a>
+during the month. Though, keep on reading, as one of the biggest PR, started in
+mid-December, was the main focus of the month.</p>
+</div>
+<div class="sect3">
+<h4 id="_new_stage_1_init">New Stage-1 init</h4>
+<div class="paragraph">
+<p>This is quite the misnomer, while true, that the PR mainly introduced a
+completely re-done init, it brought much more.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>"New-style" USB gadget (gadgetfs) handling.</p>
+</li>
+<li>
+<p>USB Networking for newer devices.</p>
+</li>
+<li>
+<p>Vendor partition firmware loading.</p>
+</li>
+<li>
+<p>Logs multiplexing and saving in stage-1.</p>
+</li>
+<li>
+<p>Proper reboot and poweroff in stage-1.</p>
+</li>
+<li>
+<p>Actual handling of NixOS-configured <code>specialFileSystems</code>.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>This new init is built using a dependencies-based system, reducing the
+complexities from the inflexible "big script" approach of the previous init.
+With this new approach, we can simply dump all of the things we need to happen
+in the init, tell them how they&#8217;re linked, and boot. The current implementation
+is naïve, but even with a naïve approach, the benefits are apparent. First, the
+developer does not need to care about the ordering of things, only describing
+what has to be, and what to do. Then, the relatively surprising part: this made
+things a bit quicker to boot.</p>
+</div>
+<div class="paragraph">
+<p>This reduced reliance on sleep and wait times during the boot to provide
+assurance that things were ready, meaning that steps happen much quicker in
+succession. To the annoyance of the author, this means that the
+well-choreographed boot images whizz by too quickly, reducing their
+meaningfulness.</p>
+</div>
+<div class="paragraph">
+<p>In the end, this is a hidden change, that serves mainly to ensure a rock-solid
+foundation for what&#8217;s coming soon.</p>
+</div>
+<div class="paragraph">
+<p>See <a href="https://github.com/NixOS/mobile-nixos/pull/66">the PR</a> for more details.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_upcoming_changes">Upcoming changes</h3>
+<div class="paragraph">
+<p>Speaking of coming soon, As previewed <a href="https://twitter.com/samueldr/status/1223139451196661760">in a tweet</a>,
+work is in progress to provide a graphical interface that can be used in early
+boot. This can be used to make a "recovery" system tailored to the project&#8217;s
+need, and more importantly, allow interaction in the boot process.</p>
+</div>
+<div class="paragraph">
+<p>The main focus of early interaction is to allow selecting a generation to boot
+into. This is part of the NixOS experience, and is currently missing. Another
+benefit to an early UI is that it will give us the opportunity to enter a
+passphrase to unlock an eventually coming encrypted system.</p>
+</div>
+<div class="paragraph">
+<p>Keep your eyes peeled for the coming PR!</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_ports">Ports</h3>
+<div class="paragraph">
+<p>No new port were made in January. There is still a
+<a href="https://mobile.nixos.org/devices/index.html">total of 10 devices</a> you can
+build for.</p>
+</div>
+</div>
+  </div>
+</article>
+
+<article>
+  <header style="background-image: url('news/2020-01-08-december-2019-round-up.jpeg');">
+    <div class="details">
+      <h3><a href="news/2020-01-08-december-2019-round-up.html">December 2019 round-up</a></h3>
+      <div class="date">January 8th 2020</div>
+    </div>
+  </header>
+
+  <div class="contents">
+  <div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>This update is the second in a series of regular updates on the state of the
+project.</p>
+</div>
+<div class="paragraph">
+<p>Only changes that have been accepted and merged in Mobile NixOS are
+chronicled here. There&#8217;s always <a href="https://github.com/NixOS/mobile-nixos/pulls">more work</a>
+currently in-progress.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_notable_changes">Notable changes</h3>
+<div class="paragraph">
+<p>Among the changes, and the <a href="https://github.com/NixOS/mobile-nixos/pulls?utf8=%E2%9C%93&amp;q=is%3Apr+merged%3A2019-12">10 PRs merged</a>,
+these changes are highlighted.</p>
+</div>
+<div class="sect3">
+<h4 id="_make_the_demo_more_useful_on_a_touch_device">Make the demo more useful on a touch device</h4>
+<div class="paragraph">
+<p>These are changes to the "example" system. This is a finalized version of the
+demo system that was running on the devices during NixCon 2019.</p>
+</div>
+<div class="paragraph">
+<p>The main difference is that this is not a raw XFCE desktop, but a
+pre-configured system that is more accessible on touch devices. The onboard
+on-screen keyboard is configured to be of a useful height. Additionally, XFWM
+has been replaced with Awesome WM configured to maximize all windows.</p>
+</div>
+<div class="paragraph">
+<p>This is still not an appropriate mobile environment, only a collection of
+configuration that makes it work well enough to test things up.</p>
+</div>
+<div class="paragraph">
+<p>Read more in <a href="https://github.com/NixOS/mobile-nixos/pull/63">pull request #63</a>.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_enhance_qemu_device">Enhance QEMU Device</h4>
+<div class="paragraph">
+<p>The <code>x86_64</code> based QEMU VM has seen fixes to, first, make it actually work
+right.</p>
+</div>
+<div class="paragraph">
+<p>What&#8217;s more interesting in this PR is the patched VGA BIOS that rotates the
+expected resolutions (720p, 1080p) on their side in portrait mode. This is
+especially helpful when working on purely software things like improving the
+example system.</p>
+</div>
+<div class="paragraph">
+<p>These changes are part of
+<a href="https://github.com/NixOS/mobile-nixos/pull/59">pull request #59</a>.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_different_stage_1_fixes">Different stage-1 fixes</h4>
+<div class="paragraph">
+<p>The root filesystem is configured to expand to the size of its backing
+partition during boot.
+Part of <a href="https://github.com/NixOS/mobile-nixos/pull/61">pull request #61</a>.</p>
+</div>
+<div class="paragraph">
+<p>Critical failure states <a href="https://mobile.nixos.org/in-depth/stage-1.html#_about_sad_phone_screens">are graphically reported</a>.
+As documented, a full-screen color-coded "sad phone" gives a general idea of
+the error encountered.
+Part of <a href="https://github.com/NixOS/mobile-nixos/pull/58">pull request #58</a>.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_other_notable_changes">Other notable changes</h4>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://github.com/NixOS/mobile-nixos/pull/41">#41 fixing adb for stage-2.</a></p>
+</li>
+<li>
+<p><a href="https://github.com/NixOS/mobile-nixos/pull/67">#67 which fixes spurious framebuffer failures on Google Pixel 2.</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_ports">Ports</h3>
+<div class="paragraph">
+<p>One new device has been merged during December.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Xiaomi Redmi Note 7 (xiaomi-lavender) [<a href="https://github.com/samueldr">@samueldr</a>] (<a href="https://github.com/NixOS/mobile-nixos/pull/28">#28</a>)</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Bringing the <a href="https://mobile.nixos.org/devices/index.html">total of devices to 10</a>.</p>
+</div>
+</div>
+  </div>
+</article>
+
+<article>
+  <header style="background-image: url('news/2019-12-03-november-2019-round-up.jpeg');">
+    <div class="details">
+      <h3><a href="news/2019-12-03-november-2019-round-up.html">November 2019 round-up</a></h3>
+      <div class="date">December 3rd 2019</div>
+    </div>
+  </header>
+
+  <div class="contents">
+  <div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>This update is the first of a series of regular updates on the state of the
+project.</p>
+</div>
+<div class="paragraph">
+<p>Only changes that have been accepted and merged in Mobile NixOS are
+chronicled here. There&#8217;s always <a href="https://github.com/NixOS/mobile-nixos/pulls">more work</a>
+currently in-progress.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_notable_changes">Notable changes</h3>
+<div class="paragraph">
+<p>Among the changes, and the <a href="https://github.com/NixOS/mobile-nixos/pulls?utf8=%E2%9C%93&amp;q=is%3Apr+merged%3A2019-11">10 PRs merged</a>,
+these changes are highlighted.</p>
+</div>
+<div class="sect3">
+<h4 id="_initrd_add_fbterm_modules">initrd: add fbterm modules</h4>
+<div class="paragraph">
+<p>When the new <code>mobile.boot.stage-1.fbterm</code> options are enabled, a userspace
+implementation of a console is started, attached to the output of tty1.
+As of right now, this is a read-only view of the console.</p>
+</div>
+<div class="paragraph">
+<p>This is still extremely useful on targets where the kernel-based virtual
+consoles will not work. As long as the framebuffer is setup, you can use the
+console to observe what is going on.</p>
+</div>
+<div class="paragraph">
+<p>Added in <a href="https://github.com/NixOS/mobile-nixos/pull/46">pull request #46</a> by
+<a href="https://github.com/lheckemann">@lheckemann</a></p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_documentation_and_website_framework">Documentation and website framework</h4>
+<div class="paragraph">
+<p>This was briefly highlighted in the last news item, though let&#8217;s describe how
+the documentation and website generation ticks.</p>
+</div>
+<div class="paragraph">
+<p>The generated documentation in the repository is always built
+using the <a href="https://github.com/NixOS/mobile-nixos/tree/master/doc">same exact tooling</a>
+as the website. In fact, the website is only adding files to the documentation
+directory to build itself.</p>
+</div>
+<div class="paragraph">
+<p>This gives us the advantage of the documentation being trivial to build locally.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>~/.../mobile-nixos $ nix-build ./doc/
+these derivations will be built:
+  /nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-mobile-nixos-docs.drv
+[...]
+/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-mobile-nixos-docs
+
+~/.../mobile-nixos $ ls -l result/index.html
+-r--r--r-- 4 root root 1541 Dec 31  1969 result/index.html
+
+~/.../mobile-nixos/mobile-nixos-website $ xdg-open result/index.html
+[...]</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The documentation, minus the news items, will open in your web browser, and work
+just like this website. The styles, the site map, everything is generated 1:1
+compared to the website.</p>
+</div>
+<div class="paragraph">
+<p>The <a href="https://github.com/NixOS/mobile-nixos-website">mobile-nixos-website</a>
+repository holds the <a href="https://github.com/NixOS/mobile-nixos-website/blob/master/.github/workflows/website.yml">
+machinery</a> that updates the site, in addition to the <a href="https://github.com/NixOS/mobile-nixos-website/tree/master/website">news items</a>.
+This is where content specific for the website is written.</p>
+</div>
+<div class="paragraph">
+<p>You may also want to subscribe to the new <a href="https://mobile.nixos.org/index.xml">RSS feed</a>.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_new_ports">New ports</h4>
+<div class="paragraph">
+<p>Three new devices were merged this month.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Google Pixel XL (google-marlin) [<a href="https://github.com/danielfullmer">@danielfullmer</a>] (<a href="https://github.com/NixOS/mobile-nixos/pull/51">#51</a>)</p>
+</li>
+<li>
+<p>Google Pixel 2 (google-walleye) [<a href="https://github.com/samueldr">@samueldr</a>] (<a href="https://github.com/NixOS/mobile-nixos/pull/50">#50</a>)</p>
+</li>
+<li>
+<p>Xiaomi A1 (xiaomi-tissot) [<a href="https://github.com/lheckemann">@lheckemann</a>] (<a href="https://github.com/NixOS/mobile-nixos/pull/47">#47</a>)</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The Pixel devices should be trivial to adapt to their respective non-XL and XL
+variants.</p>
+</div>
+</div>
+</div>
+  </div>
+</article>
+
+<article>
+  <header style="background-image: url('news/2019-11-15-nixcon-wrap-up.jpeg'); background-position: left center;">
+    <div class="details">
+      <h3><a href="news/2019-11-15-nixcon-wrap-up.html">NixCon Wrap-Up and Website</a></h3>
+      <div class="date">November 15th 2019</div>
+    </div>
+  </header>
+
+  <div class="contents">
+  <div class="paragraph">
+<p>This past October, on the 25th, a talk about Mobile NixOS was held at NixCon
+2019, in Brno, Czechia. The talk was recorded and is
+<a href="https://www.youtube.com/watch?v=229PpjZZouw">on the NixCon YouTube page</a>.</p>
+</div>
+<div class="paragraph">
+<p>Bringing us to the next point: this new and shiny website. This is was described
+as the next step for the project. This website is built by blurring the
+difference between the documentation of the project and the website. This means
+that, hopefully, neither the website or the documentation will lag behind in
+relevance. Additionally, building the site and contributing should be as simple
+as contributing to the documentation. Hopefully simple enough.</p>
+</div>
+<div class="paragraph">
+<p>Last, but not least, a few notes about the Hackday at the 2019 NixCon. I was
+left with approximately no time to work on things myself, but instead was found
+surrounded by bright individuals contributing neat stuff to the project.
+<a href="https://github.com/NixOS/mobile-nixos/pulls?utf8=%E2%9C%93&amp;q=is%3Apr+created%3A2019-10-28+created%3A2019-10-27+created%3A2019-10-26">Those pull requests</a> are a good sample of what was done,
+though early work on the OnePlus 5 was not advanced enough to be contributed back.</p>
+</div>
+<div class="paragraph">
+<p>Wrapping this all nicely, I found that the main issue contributors around me had
+was the lack of documentation about the porting process. I knew it was an issue,
+hopefully this new website and progressing documentation helps.</p>
+</div>
+  </div>
+</article>
+
+
+</section>
+
+<section class="">
+</section>
+</div>
+<footer id="footer">
+  <nav>
+    <ul>
+      <li></li>
+      
+      <li><a href='https://github.com/NixOS/mobile-nixos-website//blob/master/website/index.adoc'>Page Source</a></li>
+      <li><a href='https://github.com/NixOS/mobile-nixos-website//edit/master/website/index.adoc'>Edit</a></li>
+      
+      <li><a href='sitemap.html' class=''>Site Map</a></li>
+    </ul>
+  </nav>
+</footer>
+
+</body>
+</html>

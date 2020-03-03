@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 2.0.10">
+<title>Getting Started — Mobile NixOS</title>
+<link rel="stylesheet" href="styles/styles.css">
+<link lang="en" rel="alternate" type="application/rss+xml" title="RSS feed (EN)" href="index.xml" />
+</head>
+<body class="getting-started article">
+<header>
+  <nav>
+    <ul>
+      <li>
+        <h1>
+          <a href='index.html' class=''>Mobile NixOS</a>
+        </h1>
+      </li>
+      <li><a href='getting-started.html' class='is-active'>Getting Started</a></li>
+      <li><a href='devices/index.html' class=''>Devices List</a></li>
+      <li><a href='porting-guide.html' class=''>Porting Guide</a></li>
+    </ul>
+  </nav>
+</header>
+
+<div id="header">
+<h1>Getting Started</h1>
+</div>
+<div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>This guide assumes the user knows how to prepare their device for development
+use. These instructions are device-dependent, but not specific to Mobile NixOS.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_source_code">Source Code</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The project is hosted under the <a href="https://github.com/NixOS/">NixOS organization</a>,
+as <a href="https://github.com/NixOS/mobile-nixos">mobile-nixos</a>.</p>
+</div>
+<div class="sect2">
+<h3 id="_getting_the_sources">Getting the sources</h3>
+<div class="paragraph">
+<p>Depending on your configuration, for users with a GitHub account and the proper
+ssh configuration.</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>git clone git@github.com:NixOS/mobile-nixos.git</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Or, for everyone else.</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>git clone https://github.com/NixOS/mobile-nixos.git</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Nothing else! Everything required is self-contained.</p>
+</div>
+<div class="paragraph">
+<p>If you&#8217;re interested in testing with a device not-yet-approved, you will have
+to roll up your sleeves and checkout the relevant branch for the PRs.
+The <a href="https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/checking-out-pull-requests-locally">
+GitHub help article</a> may help.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_compiling">Compiling</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This is where it becomes harder to make a simple guide. These are different,
+heterogeneous, hardware platforms, with different quirks, compilation steps,
+and mainly, installation steps.</p>
+</div>
+<div class="sect2">
+<h3 id="_android_devices">Android devices</h3>
+<div class="paragraph">
+<p>To build a system image, you will need to build on the native target architecture.</p>
+</div>
+<div class="paragraph">
+<p>Building the boot image (<code>boot.img</code>) can be done through cross-compilation. The
+build tooling will automatically handle this.</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>nix-build --argstr device "$DEVICE" -A build.android-bootimg</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Assuming <code>DEVICE</code> has been set to an appropriate device name.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_depthcharge_devices">Depthcharge devices</h3>
+<div class="paragraph">
+<p>To build full image, you will need to build on the native target architecture.</p>
+</div>
+<div class="paragraph">
+<p>Though, it is possible to build the partition <code>depthcharge</code> will boot from,
+which holds the kernel and initrd, through cross-compilation. The build tooling
+will automatically handle this.</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>nix-build --argstr device "$DEVICE" -A build.kpart</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_running">Running</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This is where the device-specific and platform-specific instructions will help
+you. Though, here&#8217;s a quick overview.</p>
+</div>
+<div class="sect2">
+<h3 id="_android">Android</h3>
+<div class="paragraph">
+<p>Some, if not most, Android-based platforms will allow you to boot the boot image
+using <code>fastboot</code>.</p>
+</div>
+<div class="paragraph">
+<p>Luckily, running stage-1 through <code>fastboot</code> is enough to get started porting for
+the target system, as it will exercise the harder initial bootstrapping parts.
+That is, getting a system working with a minimal set of useful features.</p>
+</div>
+<div class="paragraph">
+<p>The device will need to be booted in its bootloader, or <code>fastboot</code>, mode. The
+instructions are device-dependent. The boot image can be run using the following
+command.</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>fastboot boot result</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If you have a system image (<code>system.img</code>) built, you can use <code>fastboot</code> to flash
+it to the device. Note that it might be too big to fit over the <code>system</code>
+partition. In such case, it can be flashed on the <code>userdata</code> partition.</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Warning</div>
+</td>
+<td class="content">
+<strong>This will erase everything on the partition</strong>. Additionally, the common
+backups methods, e.g. TWRP, will <strong>not</strong> backup the <code>userdata</code> partition.
+</td>
+</tr>
+</table>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>fastboot flash userdata system.img</pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_depthcharge">Depthcharge</h3>
+<div class="paragraph">
+<p>This one is annoying to get started currently. Without a full Mobile NixOS
+build, you will need to fill in some gaps manually.</p>
+</div>
+<div class="paragraph">
+<p>The <a href="https://www.chromium.org/chromium-os/chromiumos-design-docs/disk-format">
+upstream documentation about the disk format</a> may help shed some light in getting
+this booting.</p>
+</div>
+<div class="paragraph">
+<p>On a Mobile NixOS-built disk image for a ; depthcharge` device, you can replace
+the partition with the newly built image, for the next boot. This is especially
+useful with USB devices or SD cards.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_customizing">Customizing</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>You probably will want to toggle options and such things when fiddling with
+Mobile NixOS, at first. The repository is structured in a way to allow you to
+add options to an untracked <code>local.nix</code> file. The default <code>nix-build</code>
+invocations will respect the content of that file as your configuration.</p>
+</div>
+<div class="paragraph">
+<p>A sample <code>local.nix</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-nix" data-lang="nix">{ lib, ... }:
+
+{
+  # Disables splash screens during boot
+  mobile.boot.stage-1.splash.enable = false;
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_contributing">Contributing</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This is a big topic, and not something about getting started! Though, quickly
+noted, contributions are currently handled through GitHub pull requests.</p>
+</div>
+<div class="paragraph">
+<p>If you are unable or unwilling to use GitHub for pull requests, you can e-mail
+contributions, following the usual git via e-mail contribution workflow, to my
+e-mail address, which you will find attached to commits I authored.</p>
+</div>
+<div class="paragraph">
+<p>Note that there are more in-depth guides about specific contribution topics.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="porting-guide.html">Device Porting Guide</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<footer id="footer">
+  <nav>
+    <ul>
+      <li></li>
+      
+      <li><a href='https://github.com/NixOS/mobile-nixos//blob/master/doc/getting-started.adoc'>Page Source</a></li>
+      <li><a href='https://github.com/NixOS/mobile-nixos//edit/master/doc/getting-started.adoc'>Edit</a></li>
+      
+      <li><a href='sitemap.html' class=''>Site Map</a></li>
+    </ul>
+  </nav>
+</footer>
+
+</body>
+</html>

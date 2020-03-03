@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 2.0.10">
+<title>README.adoc — Mobile NixOS</title>
+<link rel="stylesheet" href="styles/styles.css">
+<link lang="en" rel="alternate" type="application/rss+xml" title="RSS feed (EN)" href="index.xml" />
+</head>
+<body class="README article">
+<header>
+  <nav>
+    <ul>
+      <li>
+        <h1>
+          <a href='index.html' class=''>Mobile NixOS</a>
+        </h1>
+      </li>
+      <li><a href='getting-started.html' class=''>Getting Started</a></li>
+      <li><a href='devices/index.html' class=''>Devices List</a></li>
+      <li><a href='porting-guide.html' class=''>Porting Guide</a></li>
+    </ul>
+  </nav>
+</header>
+
+<div id="header">
+<h1>README.adoc</h1>
+</div>
+<div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p><strong>This is expected to be built against the nixos-unstable for now.</strong></p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_2_minutes_startup">2-minutes startup</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>For an already bootloader-unlocked Android-based, <code>fastboot</code>-using device.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code># Build a boot image
+nix-build --argstr device $DEVICE -A build.android-bootimg
+
+# Reboot the phone to fastboot
+adb wait-for-device &amp;&amp; adb reboot bootloader
+
+# Use fastboot to boot the produced image
+fastboot boot result</code></pre>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_booting_qemu">Booting qemu</h3>
+<div class="paragraph">
+<p>The qemu target has a <code>vm</code> build output, which results in a script that will
+automatically start the "virtual device".</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code># Build the system
+nix-build --argstr device qemu-x86_64 -A build.vm
+
+# Run the VM, using the script
+./result</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_local_nix"><code>local.nix</code></h3>
+<div class="paragraph">
+<p>This file is used to work on producing build artifacts from the "WIP" repository
+checkout. This is equivalent to adding settings in <code>configuration.nix</code>.</p>
+</div>
+<div class="paragraph">
+<p>If the file does not exist, it will not fail.</p>
+</div>
+<div class="paragraph">
+<p>A sample <code>local.nix</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>{ lib, ... }:
+
+{
+  mobile.boot.stage-1.splash.enable = false;
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This will disable splash screens.</p>
+</div>
+<div class="paragraph">
+<p>Note that this can be set to another file with <code>&lt;mobile-nixos-configuration&gt;</code>.
+By setting it to the path of a nix expression, it will be used instead of using
+<code>local.nix</code>.</p>
+</div>
+<div class="paragraph">
+<p>This is the current mechanism expected to be used to create special builds using
+the mobile-nixos tooling (e.g. to create a custom special <code>boot.img</code>).</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_goals">Goals</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The goal is to get a NixOS system running on mobile devices, e.g. Android phones.</p>
+</div>
+<div class="paragraph">
+<p>This is intended as building blocks, allowing the end-users to configure their
+systems as desired.</p>
+</div>
+<div class="paragraph">
+<p>The amount of targeted devices does not dilute or devalue the work. It&#8217;s the
+other way around, it increases the odds that people will start using the project
+and contribute back.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_prior_work">Prior work</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This project initially borrowed and relied on the hard work from the
+<a href="https://postmarketos.org/">PostmarketOS project</a>. They are forever
+thanked in their efforts.</p>
+</div>
+</div>
+</div>
+</div>
+<footer id="footer">
+  <nav>
+    <ul>
+      <li></li>
+      
+      <li><a href='https://github.com/NixOS/mobile-nixos//blob/master/README.adoc'>Page Source</a></li>
+      <li><a href='https://github.com/NixOS/mobile-nixos//edit/master/README.adoc'>Edit</a></li>
+      
+      <li><a href='sitemap.html' class=''>Site Map</a></li>
+    </ul>
+  </nav>
+</footer>
+
+</body>
+</html>
